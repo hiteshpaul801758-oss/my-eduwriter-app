@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Assignment Writer</title>
+<style>
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    background-color: #0f1115;
+    color: #e0e0e0;
+  }
+  header {
+    background-color: #1c1f26;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  }
+  header h1 {
+    font-size: 1.5em;
+    color: #00bcd4;
+  }
+  nav a {
+    color: #e0e0e0;
+    margin-left: 20px;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  nav a:hover {
+    color: #00bcd4;
+  }
+  section {
+    padding: 60px 20px;
+    max-width: 800px;
+    margin: auto;
+  }
+  .assignment-box {
+    background-color: #1e222a;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.4);
+  }
+  textarea {
+    width: 100%;
+    height: 120px;
+    background: #121417;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    resize: none;
+    font-size: 1em;
+    margin-bottom: 10px;
+  }
+  button {
+    background-color: #00bcd4;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+  }
+  button:disabled {
+    background-color: #555;
+    cursor: not-allowed;
+  }
+  button:hover:not(:disabled) {
+    background-color: #0097a7;
+  }
+  .output {
+    margin-top: 20px;
+    background-color: #161a20;
+    padding: 15px;
+    border-radius: 8px;
+    white-space: pre-wrap;
+    max-height: 400px;
+    overflow-y: auto;
+    position: relative;
+  }
+  .copy-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    color: #00bcd4;
+    cursor: pointer;
+    font-size: 1.2em;
+  }
+  .loading-dots span {
+    animation: blink 1.4s infinite both;
+  }
+  .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+  .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes blink {
+    0%, 80%, 100% { opacity: 0; }
+    40% { opacity: 1; }
+  }
+  .terms {
+    margin-top: 10px;
+  }
+  footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 0.9em;
+    color: #aaa;
+    border-top: 1px solid #222;
+  }
+  .socials a {
+    color: #00bcd4;
+    text-decoration: none;
+    margin-right: 15px;
+    font-size: 1.2em;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>AI Assignment Writer</h1>
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#tool">Assignment Tool</a>
+    <a href="#about">About</a>
+  </nav>
+</header>
+
+<section id="home">
+  <h2>Welcome to AI Assignment Writer</h2>
+  <p>Generate long, well-structured assignments instantly using our AI-powered writing assistant. Perfect for students and professionals alike.</p>
+</section>
+
+<section id="tool">
+  <h2>Assignment Generator</h2>
+  <div class="assignment-box">
+    <textarea id="topic" placeholder="Enter your assignment topic here..."></textarea>
+    <div class="terms">
+      <input type="checkbox" id="terms"> I agree to the <a href="#">Terms of Use</a>.
+    </div>
+    <br>
+    <button id="generateBtn" disabled>Generate Assignment</button>
+    <div class="output" id="outputBox">
+      <button class="copy-btn" id="copyBtn" title="Copy">&#128203;</button>
+      <div id="outputText"></div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <h2>About Us</h2>
+  <p>We help students write comprehensive, AI-powered assignments quickly and efficiently.</p>
+  <div class="socials">
+    <a href="mailto:hiteshpaul801758@gmail.com">📧</a>
+    <a href="https://https://www.instagram.com/darkvibes78800/?hl=en" target="_blank">📷</a>
+  </div>
+  <div class="socials">
+    <a href="mailto:avikmaji47@gmail.com">📧</a>
+    <a href="https://https://www.instagram.com/darkvibes78800/?hl=en" target="_blank">📷</a>
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 AI Assignment Writer | Designed by Hitesh Paul & Avik Maji</p>
+</footer>
+
+<script>
+const topicInput = document.getElementById('topic');
+const generateBtn = document.getElementById('generateBtn');
+const outputBox = document.getElementById('outputBox');
+const outputText = document.getElementById('outputText');
+const copyBtn = document.getElementById('copyBtn');
+const terms = document.getElementById('terms');
+
+terms.addEventListener('change', () => {
+  generateBtn.disabled = !terms.checked;
+});
+
+function typeWriter(text, i = 0) {
+  if (i < text.length) {
+    outputText.innerHTML += text.charAt(i);
+    outputText.scrollTop = outputText.scrollHeight;
+    setTimeout(() => typeWriter(text, i + 1), 10);
+  }
+}
+
+generateBtn.addEventListener('click', () => {
+  const topic = topicInput.value.trim();
+  if (!topic) {
+    alert("Please enter a topic!");
+    return;
+  }
+
+  outputText.innerHTML = 'Generating<span class="loading-dots"><span>.</span><span>.</span><span>.</span></span>';
+  
+  setTimeout(() => {
+    const longAssignment = `
+Title: ${topic}
+
+Introduction:
+This assignment delves deeply into the topic "${topic}", presenting a thorough exploration of its key aspects, history, current developments, and future implications. The objective is to provide a complete, structured, and analytical perspective that helps readers understand the topic in a broader academic context.
+
+Background and Context:
+The origins of ${topic.toLowerCase()} can be traced back to significant historical developments that shaped the modern understanding of this field. Over the decades, scholars and researchers have examined various dimensions, uncovering critical insights into its social, economic, and technological impact.
+
+Detailed Analysis:
+1. Theoretical Framework: Various theories explain the significance of ${topic.toLowerCase()} in modern society. These include both classical and contemporary perspectives.
+2. Practical Implementation: The practical applications of ${topic.toLowerCase()} extend across industries and academic fields. Recent innovations have enhanced its scope and efficiency.
+3. Case Studies: Several case studies highlight real-world use cases where ${topic.toLowerCase()} has played a transformative role in shaping outcomes.
+4. Global Perspective: The global influence of ${topic.toLowerCase()} is immense. Different nations have adopted unique approaches, contributing to the global discourse and progress.
+
+Critical Discussion:
+While ${topic.toLowerCase()} has numerous advantages, it also presents challenges and ethical dilemmas. Scholars often debate the balance between benefits and drawbacks, emphasizing the importance of sustainable and responsible use. This section explores both sides of the argument and suggests balanced solutions.
+
+Future Outlook:
+Looking ahead, the evolution of ${topic.toLowerCase()} will likely be shaped by rapid technological advancements and interdisciplinary collaboration. Research continues to expand our understanding and application of this field.
+
+Conclusion:
+In conclusion, ${topic.toLowerCase()} remains a vital and evolving field that influences numerous aspects of modern life. Its study provides valuable insights into global development, innovation, and human progress.
+
+References:
+1. Academic Journal of ${topic}
+2. Global Research Institute Reports
+3. Authoritative Books and Whitepapers
+4. Verified Educational Sources
+
+(Generated by AI Assignment Writer)
+`;
+    outputText.innerHTML = "";
+    typeWriter(longAssignment);
+  }, 1500);
+});
+
+copyBtn.addEventListener('click', () => {
+  navigator.clipboard.writeText(outputText.innerText);
+  copyBtn.innerText = "✅";
+  setTimeout(() => copyBtn.innerText = "📋", 1500);
+});
+</script>
+
+</body>
+</html>
